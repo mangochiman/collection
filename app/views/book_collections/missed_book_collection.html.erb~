@@ -1,0 +1,4 @@
+<%= form_tag :action => "create"%>
+Book collection name<%= text_field:book_collection, :name %>
+<%= submit_tag"Submit"%>
+</form_tag>

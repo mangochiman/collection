@@ -1,0 +1,4 @@
+<%= form_tag("save_upload", :multipart => true) %>
+Image<%= file_field_tag'book'%><br />
+<%= submit_tag"Upload"%>
+</form_tag>

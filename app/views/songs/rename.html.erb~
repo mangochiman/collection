@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<script src ="/javascripts/touchScreenToolkit.js" defer ></script>
+	</head>
+
+<body>
+	<div id="content">
+		<div id="flash_notice"><%= flash[:notice]%></div>
+		<%= form_tag :action => "rename", :id => @song %>
+		<%= text_field:song, :name, :helptext => "Rename song" %>
+		</form_tag>
+	</div>
+</body>
+</html>

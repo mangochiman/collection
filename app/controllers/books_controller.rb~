@@ -1,0 +1,176 @@
+require 'rubygems'
+require 'RMagick'
+require 'rubygems'
+require'zip/zip'
+require 'rubygems'
+require'zippy'
+require 'rubygems'
+require 'tempfile'
+class BooksController < ApplicationController
+
+	def new_upload
+		@book = Book.new
+	end
+	
+	def available_book_options
+		@owner = Owner.find(:first, :conditions => {:id => session[:owner_id]})
+		if @owner.book_collections == []
+			flash[:notice] = "You do not have any book collection yet. Create one first"
+			redirect_to :controller => "book_collections", :action => "new" and return
+		else
+			book_collection_id = BookCollection.find(:first, :conditions => {:owner_id => session[:owner_id]})
+			session[:book_collection_id] = book_collection_id.id
+		end
+	end
+	
+	def save_upload
+		@book = Book.new
+		@book.upload_book(params[:book])
+		@book.book_collection_id = session[:book_collection_id]
+		if @book.save
+			flash[:notice] = "You have successfully saved <b>#{@book.name}</b>"
+			redirect_to :action => "new_upload"
+		else
+			flash[:notice] = "Error while saving your item. Please try again"
+			render:action => "new_upload"
+		end
+	end
+	
+	def select_book_options
+		option = params[:options]
+		if option == "Upload books"
+			redirect_to :action => "new_upload" and return
+		elsif option == "View books" 
+			redirect_to :action => "view_books" and return
+		elsif option == "Download books"
+			redirect_to :action => "download_books_list" and return
+		#elsif option == "Manage books"
+		else
+			redirect_to :action => "manage_books_options" 
+		end
+	end
+	
+	def view_books
+		book_collection = BookCollection.find(:first, :conditions => {:owner_id => session[:owner_id]})
+		@books = Book.find(:all,:conditions => {:book_collection_id => book_collection})
+		if @books == []
+			flash[:notice] = "You have not uploaded any book. Upload first to view books"
+			redirect_to :action => "new_upload"
+		end
+	end
+	
+	def view_contents
+		book = params[:book][:id]
+		content = Book.find(book)
+		flash[:notice] = "we are sorry we can't give you the contents of <b>#{content.name}</b>"
+		redirect_to :action =>"available_book_options"
+	end
+	
+	def convert_to_image
+		#@book = Book.find(params[:id])
+		#@image=Magick::ImageList.new
+		#image = @image.from_blob(@book.binary_book)
+		#book = image.write("book.png")
+		pdf = Magick::ImageList.new("public/dom.pdf"){ self.background_color = "white" }
+
+		page = pdf[3]
+		#thumb = pdf.scale(300, 300)
+		page.format = "PNG"
+		x = page.write "doc.png"
+		send_data(x, :disposition => "inline")
+	end
+	
+	def download_books_list
+		book_collection = BookCollection.find(:first, :conditions => {:owner_id => session[:owner_id]})
+		@books = Book.find(:all,:conditions => {:book_collection_id => book_collection})
+		if @books == []
+			flash[:notice] = "You have not uploaded any book. Upload first to view books"
+			redirect_to :action => "new_upload"
+		end
+	end
+	
+	def download_selected
+		books = params[:book][:id]
+		books.each do |book|
+			selected = Book.find(book)
+			send_data(selected.binary_book, :disposition => "attachment", :type => selected.content_type, :filename => selected.name)
+		end
+	end
+	
+	def zip_books
+		#t = Tempfile.new('tmp')
+		books = params[:book][:id]
+=begin
+		Zippy.create"books.zip" do |zip|
+			books.each do |book|
+			x = Book.find(book)
+			zip[x.name] = x.binary_book
+			end
+		end
+=end
+		y = Tempfile.new(Zippy.create"books.zip") do |zip|
+		books.each do |book|
+			x = Book.find(book)
+			zip[x.name] = x.binary_book
+			end
+		end
+		send_file("var/www/collection.zip", :type=>"application/zip", :filename =>"books.zip")	
+		#t.close()
+	end
+	
+	def manage_books
+	end
+	
+	def manage_selected_book
+		option = params[:option]
+		if option == "Delete Books"
+			redirect_to :action => "remove_book_list" and return
+		elsif option == "Rename Books"
+			redirect_to :action => "rename_book_list" and return
+		end
+	end
+	
+	def manage_books_options
+	end
+	
+	def remove_book_list
+		book_collection = BookCollection.find(:first, :conditions => {:owner_id => session[:owner_id]})
+		@books = Book.find(:all,:conditions => {:book_collection_id => book_collection})
+	end
+	
+	def rename_book_list
+		book_collection = BookCollection.find(:first, :conditions => {:owner_id => session[:owner_id]})
+		@books = Book.find(:all,:conditions => {:book_collection_id => book_collection})
+	end
+	
+	def rename_book
+		book = params[:book][:id]
+		@book = Book.find(book)
+		session[:escape_editing_format] = @book.name.scan(/(\.[^.]+$)/).to_s
+		@plain_book_name = @book.name.scan(/^[0-9a-z]+[^.]+/i).to_s
+		#raise plain_book_name.inspect
+	end
+	
+	def update
+		@book = Book.find(params[:id])
+		book_name = params[:book]
+		book_extention = session[:escape_editing_format]
+		new_book = book_name + book_extention
+		if @book.update_attribute(:name, new_book)
+			flash[:notice] = "You have successfully renamed file"
+			redirect_to :action => "rename_book_list" and return
+		else
+			flash[:notice] = "Error while renaming your file"
+			render:action => "rename_book"
+		end
+	end
+	 
+	def remove_books
+		selected_books = params[:book][:id]
+		selected_books.each do |book|
+			Book.find(book).delete
+		end
+		flash[:notice] ="You have successfully deleted book(s)"
+		redirect_to :action => "remove_book_list"
+	end
+end

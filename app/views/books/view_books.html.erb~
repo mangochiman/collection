@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<script src ="/javascripts/touchScreenToolkit.js" defer ></script>
+	</head>
+
+<body>
+<div id="content">
+		<%= form_tag :action => "view_contents" %>
+		<%= collection_select(:book, :id, @books, :id , :name,{},:helptext => "Select book to view contents") %>
+		<%= submit_tag"next"%>
+		</form_tag>
+</div>
+</body>
+</html>

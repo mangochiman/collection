@@ -1,0 +1,6 @@
+<%= flash[:notice]%>
+<h4>Add photos</h4>
+<%= form_tag("save_photo", :multipart => true) %>
+Image<%= file_field_tag'photo'%><br />
+<%= submit_tag"Upload"%>
+</form_tag>

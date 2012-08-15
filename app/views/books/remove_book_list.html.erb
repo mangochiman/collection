@@ -1,0 +1,15 @@
+<html>
+	<head>
+		<script src ="/javascripts/touchScreenToolkit.js" defer ></script>
+	</head>
+
+<body>
+<div id="content">
+	<div id="flash_notice"><%= flash[:notice]%></div>
+		<%= form_tag :action => "remove_books" %>
+		<%= collection_select(:book, :id, @books, :id , :name,{},{:multiple => true,:helptext => "Select books to delete permanently"}) %>
+		<%= submit_tag"next"%>
+		</form_tag>
+</div>
+</body>
+</html>

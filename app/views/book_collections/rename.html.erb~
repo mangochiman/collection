@@ -1,0 +1,4 @@
+<%= form_tag :action =>"", :id => @book_collection %>
+Rename <%= text_field:book_collection, :name %>
+<%= submit_tag"Submit"%>
+</form_tag>

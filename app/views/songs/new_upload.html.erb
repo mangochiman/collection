@@ -1,0 +1,5 @@
+<h4>New song upload</h4>
+<%= form_tag("upload",:multipart => true) %>
+Select song<%= file_field_tag"song"%><br />
+<%= submit_tag"submit" %>
+</form_tag>

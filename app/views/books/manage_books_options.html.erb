@@ -1,0 +1,13 @@
+<html>
+	<head>
+		<script src ="/javascripts/touchScreenToolkit.js" defer ></script>
+	</head>
+
+<body>
+<div id="content">
+<%= form_tag :action => "manage_selected_book"%>
+<%= select_tag:option, options_for_select([["Delete Books","Delete Books"],["Rename Books","Rename Books"]]),:helptext => "What do you want to do?" %>
+</form_tag>
+</div>
+</body>
+</html>

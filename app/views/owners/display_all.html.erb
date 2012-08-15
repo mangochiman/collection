@@ -1,0 +1,24 @@
+<html>
+	<head>
+		<script src ="/javascripts/touchScreenToolkit.js" defer ></script>
+	</head>
+
+<body>
+<div id="content">
+	<table>
+	<%= form_tag (:controller => "photos",:action => "available_photo_options")%>
+	<%= flash[:notice]%>
+	<tr>
+	<td><%= collection_select(:screen_name, :id, @owners,:id, :screen_name,{},{:helptext =>"Select screen name"})%></td>
+	</tr>
+	<tr>
+		<td>Collection<%= select_tag(:album, options_for_select([['Photo Album', 'photo_album'], ['Music Album', 'music_album'],['Books', 'books']]),:helptext => "Select collection") %></td>
+	</tr>
+	<tr>
+		<td><%= submit_tag"submit"%></td>
+	</tr>
+	</table>
+</form_tag>
+</div>
+</body>
+</html>

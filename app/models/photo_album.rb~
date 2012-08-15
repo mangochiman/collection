@@ -1,0 +1,8 @@
+class PhotoAlbum < ActiveRecord::Base
+	has_many :photos, :dependent => :destroy
+	belongs_to :owner
+	
+	def upload_file=(file)
+		self.
+	end
+end

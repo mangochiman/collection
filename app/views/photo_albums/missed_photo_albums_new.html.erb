@@ -1,0 +1,6 @@
+<%= flash[:notice] %>
+<%= form_tag :action => "missed_photo_albums_create"%>
+Photo Album Name<%= text_field:photo_album,:name %><br />
+<%= hidden_field:photo_album,:owner_id, :value => session[:id] %><br />
+<%= submit_tag"Finish",:name => "create_album" %>
+</form_tag>

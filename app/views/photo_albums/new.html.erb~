@@ -1,0 +1,22 @@
+<html>
+	<head>
+		<script src ="/javascripts/touchScreenToolkit.js" defer ></script>
+	</head>
+
+<body>
+	<div id="content">
+		<table>
+		<div id="flash_notice"><%= flash[:notice] %></div>
+		<%= form_tag :action => "create" %>
+		<tr>
+			<td><%= text_field:photo_album,:name, :helptext => "Photo album name"%></td>
+		</tr>
+			<td><%= hidden_field:photo_album,:owner_id, :value => $owner_id %></td>
+		<tr>
+			<td><%= submit_tag"Next" %></td>
+		</tr>
+		</table>
+	</div>
+	</form_tag>
+</body>
+</html>

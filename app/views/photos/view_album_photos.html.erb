@@ -1,0 +1,25 @@
+<html>
+	<head>
+		<title></title>
+		<link href="/ppgallery/css/ppgallery.css" rel="stylesheet" type="text/css" />
+		<link href="/ppgallery/css/dark-hive/jquery-ui-1.8.6.custom.css" rel="stylesheet" type="text/css" />
+		<script type="text/javascript" src="/javascripts/jquery.min.js"></script>
+		<script type="text/javascript" src="/javascripts/jquery-ui.min.js"></script> 
+		<script type="text/javascript" src="/ppgallery/js/ppgallery.js"></script> 
+		<script type="text/javascript">
+	$(document).ready(function() {
+	$('#gallery').ppGallery();
+	});
+</script>
+	</head>
+<body>
+	<ul id="gallery">
+  <% @photos.each do |photo| %>
+ <!--  <li><a href="http://ppplugins.com/demo/ppgallery/images/l_30.jpg"><img src="http://ppplugins.com/demo/ppgallery/images/s_30.jpg"></a></li>-->
+   <li><a href="/photos/image/<%=photo.id%>"><%= image_tag(url_for({:action => 'image', :id => photo}),:width => '70%',:height => '70%' ) %></a></li>
+   <% end %>
+</ul>
+
+</body>
+</html>
+

@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<script src ="/javascripts/touchScreenToolkit.js" defer ></script>
+	</head>
+
+<body>
+<div id="content">
+<div id="flash_notice"><%= flash[:notice] %></div>
+<%= form_tag :action => "select_book_options" %>
+<%= select_tag:options,options_for_select([["Upload books","Upload books"],["View books","View books"],["Download books","Download books"],["Manage Books","Manage Books"]]),:helptext =>"What do you want to do?" %><br />
+<%= submit_tag"submit"%>
+</form_tag>
+</body>
+</html>

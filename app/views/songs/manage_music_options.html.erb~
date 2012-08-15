@@ -1,0 +1,14 @@
+<html>
+	<head>
+		<script src ="/javascripts/touchScreenToolkit.js" defer ></script>
+	</head>
+
+<body>
+	<div id="content">
+	<%= form_tag :action => "select_manage_option" %>
+	<%= select_tag:options, options_for_select([["Rename Song","Rename Song"],["Delete song","Delete Song"]]),:helptext => "What do you want to do?" %>
+	<%= submit_tag"Submit"%>
+	</form_tag>
+	</div>
+</body>
+</html>

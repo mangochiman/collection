@@ -1,0 +1,15 @@
+<html>
+	<head>
+		<script src ="/javascripts/touchScreenToolkit.js" defer ></script>
+	</head>
+
+<body>
+	<div id="content">
+		<div id="flash_notice"><%= flash[:notice]%></div>
+		<%= form_tag :action => "rename_song" %>
+		<%= collection_select(:song, :id, @songs, :id, :name,{},{:helptext => "Select song to rename"}) %>
+		<%= submit_tag"submit" %>
+		</form_tag>
+	</div>
+</body>
+</html>
